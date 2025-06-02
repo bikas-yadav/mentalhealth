@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mental Health Screener</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f9ff;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+        }
+
+        .status-normal {
+            border-color: #2ecc71;
+        }
+
+        .status-stress {
+            border-color: #f39c12;
+        }
+
+        .status-depression {
+            border-color: #e74c3c;
+        }
+
+        .confidence {
+            color: #555;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🧠 Mental Health Screener</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="pdf_file" required>
+            <button type="submit">Analyze</button>
+        </form>
+
+        {% if result %}
+        <div class="result 
+             {% if result[0] == '✅ Normal' %}status-normal
+             {% elif result[0] == '⚠️ Stress' %}status-stress
+             {% elif result[0] == '🆘 Depression' %}status-depression
+             {% endif %}">
+            <h3>Overall Mental Health Status:</h3>
+            <p><strong>{{ result[0] }}</strong></p>
+            <p class="confidence">Confidence: {{ result[1] | round(2) }}%</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
